@@ -2,6 +2,7 @@
 import sys
 import csv
 from Bio import SeqIO
+from Bio.SeqIO import FastaIO
 
 GeneFile = sys.argv[1]
 RNAFile = sys.argv[2]
@@ -42,9 +43,13 @@ with open(RNAFile) as csv_file:
 
 addedGenes = []
 KeepRecords = []
-with open(fasta, "r") as handle:
+records = 0
+repeats = 0
+uniq = 0
+with open(fasta, "r") as handle: 
     for record in SeqIO.parse(handle, "fasta"):
         #print(record.name)
+        records = records +1
         ID = record.name.split(" ")
         db = ID[0].split('_')[0]
         spec = ID[0].split('_')[1]
@@ -67,14 +72,25 @@ with open(fasta, "r") as handle:
             #print(accession, "is in Gene dict")
             #print(gene)
             if gene in addedGenes:
-                print(record.name, "gene already present")
+                print("removed", record.name, "gene already present")
+                repeats = repeats +1
             else:
                 addedGenes.append(gene)
                 KeepRecords.append(record)
                 print("added" , record.name , "to fasta" )
-
+                uniq = uniq +1
         except:
-            #print(accession, "not found in GFF")
-            a=1
+            #print(accession, "not found in GF
+            KeepRecords.append(record)
+            print("added" , record.name , "to fasta" )
+            uniq = uniq +1 
 
-SeqIO.write(KeepRecords, out , "fasta")
+
+
+with open(out, "w") as output_handle:
+	fasta_out = FastaIO.FastaWriter(output_handle, wrap=None)
+	fasta_out.write_file(KeepRecords)
+
+print(" Number of records = ", records)
+print("Number of uniq = ", uniq )
+print("number of removed = ", repeats)

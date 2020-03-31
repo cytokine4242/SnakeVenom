@@ -18,7 +18,8 @@ do
         ${fold}*.CDS.txt \
         ${input} \
         /scratch/venom/SnakeVenom-Feb20/Data/RepltileDBFilter/ReptileGenomes.prot.${spec[i]}.fa  > ${spec[i]}.out
-    i=$((i +1 ))
+
     input=/scratch/venom/SnakeVenom-Feb20/Data/RepltileDBFilter/ReptileGenomes.prot.${spec[i]}.fa
+    i=$((i +1 ))
 done
 

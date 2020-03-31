@@ -7,6 +7,7 @@ GeneFile = sys.argv[1]
 RNAFile = sys.argv[2]
 CDSFile = sys.argv[3]
 fasta = sys.argv[4]
+out = sys.argv[5]
 print(GeneFile)
 print(RNAFile)
 print(CDSFile)
@@ -28,7 +29,6 @@ with open(CDSFile) as csv_file:
         cds[row[2]] = [row[0]]    
         #print(row)
 
-print(cds['XP_026552168.1'])
 
 rnaDict = {}
 with open(RNAFile) as csv_file:
@@ -37,7 +37,6 @@ with open(RNAFile) as csv_file:
         rnaDict[row[0]] = [row[1]]    
         #print(row)
 
-print(rnaDict['rna5937'])
 
 
 
@@ -68,7 +67,7 @@ with open(fasta, "r") as handle:
             #print(accession, "is in Gene dict")
             #print(gene)
             if gene in addedGenes:
-                print("gene already present")
+                print(record.name, "gene already present")
             else:
                 addedGenes.append(gene)
                 KeepRecords.append(record)
@@ -78,4 +77,4 @@ with open(fasta, "r") as handle:
             #print(accession, "not found in GFF")
             a=1
 
-SeqIO.write(KeepRecords, fasta + ".duplicateRemoved.fas" , "fasta")
+SeqIO.write(KeepRecords, out , "fasta")

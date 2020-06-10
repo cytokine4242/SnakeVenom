@@ -13,8 +13,7 @@ do
 	#echo $line
 	NCBI=$(echo $line | cut -f1 -d',')
 	BABS=$(echo $line | cut -f2 -d',')
-	echo $BABS
-	echo $NCBI
+	echo "$NCBI, $BABS"
 	#cat $tmp
 	sed -i "s/$BABS/$NCBI/g" $out 
 

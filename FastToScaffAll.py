@@ -4,6 +4,36 @@ import re
 from Bio import SeqIO
 from Bio.SeqIO import FastaIO
 
+def AccessionSearch(species, search):
+
+    if species == 'NOTSC' or species == 'PSETE':
+        m = re.search('protein_id=(.*)', search)
+        print("Transcript", m)
+    elif (species == 'BOACO'):
+        m = re.search('ID=(.*)', search)
+        
+    elif (species == 'CROVV'):
+        m = re.search('Crovir_Transcript_ID=(.*)', search)
+    elif (species == 'NAJNA'):
+        m = re.search('ID=(.*)', search)
+    elif ( species == 'HYDCUR'):
+        m = re.search('Parent=(.*)', search)
+
+    if m:
+        match = m.group(1)
+        accession = match.split(";")
+        accession = accession[0]
+        if (species == 'CROVV'):
+            name = accession.split("-")
+            accession = name[0] + "-protein-" + name[2]
+            #print("FOUND",accession)
+
+            
+    else:
+        accession = None
+    
+    return accession 
+
 GeneFile = sys.argv[1]
 fasta = sys.argv[2]
 specCode = sys.argv[3]
@@ -40,13 +70,9 @@ with open(GeneFile) as csv_file:
             continue
         #print(row[8])
         
-    m = re.search('protein_id=(.*)', row[8])
-        if m:
-            match = m.group(1)
-            accession = match.split(";")
-            accession = accession[0]
-        else:
-            continue
+        accession = AccessionSearch(specCode, row[8])
+        if accession is None:
+           continue
         #protein = row[8].split("=")
         #accession=protein[-1]
         #print(accession)
@@ -65,3 +91,8 @@ for acc in speciesAccession:
 
 
 print(scaffoldCount)
+
+
+
+
+

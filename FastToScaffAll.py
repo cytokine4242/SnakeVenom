@@ -8,7 +8,7 @@ def AccessionSearch(species, search):
 
     if species == 'NOTSC' or species == 'PSETE':
         m = re.search('protein_id=(.*)', search)
-        print("Transcript", m)
+        #print("Transcript", m)
     elif (species == 'BOACO'):
         m = re.search('ID=(.*)', search)
         
@@ -16,6 +16,9 @@ def AccessionSearch(species, search):
         m = re.search('Crovir_Transcript_ID=(.*)', search)
     elif (species == 'NAJNA'):
         m = re.search('ID=(.*)', search)
+
+
+        #ID=Naja_naja35841-RA
     elif ( species == 'HYDCUR'):
         m = re.search('Parent=(.*)', search)
 
@@ -27,7 +30,9 @@ def AccessionSearch(species, search):
             name = accession.split("-")
             accession = name[0] + "-protein-" + name[2]
             #print("FOUND",accession)
-
+        if (species == 'NAJNA'):
+            accession = "Nana" + accession[9:]
+            #print(accession)
             
     else:
         accession = None
@@ -37,7 +42,7 @@ def AccessionSearch(species, search):
 GeneFile = sys.argv[1]
 fasta = sys.argv[2]
 specCode = sys.argv[3]
-
+print(specCode)
 scaffolds = {}
 accession = []
 records = 0
@@ -58,7 +63,7 @@ with open(fasta, "r") as handle:
                 accession = accession + accessionList[i] + "_"
             accession = accession[:-1]
             speciesAccession.append(accession)
-            print(ID,accession)
+            #print(ID,accession)
             
 
 print(len(speciesAccession))
@@ -68,8 +73,11 @@ with open(GeneFile) as csv_file:
     for row in csv_reader:
         if (row[0][0] == "#"):
             continue
-        #print(row[8])
-        
+        #print(row)
+        try:
+            a =(row[8])
+        except: 
+            print(row)
         accession = AccessionSearch(specCode, row[8])
         if accession is None:
            continue
@@ -80,15 +88,20 @@ with open(GeneFile) as csv_file:
         #print(accession)
 scaffoldCount = {}
 for acc in speciesAccession:
-    print(acc)
+    #print(acc)
     try:
         
         scaffoldCount[accToScaffolds[acc]] += 1
+        print(acc, 'in', accToScaffolds[acc])
     except: 
-        print(accToScaffolds[acc])
-        scaffoldCount[accToScaffolds[acc]] = 1
-    print(acc, 'in', accToScaffolds[acc])
-
+        #print(accToScaffolds[acc])
+        try:
+            scaffoldCount[accToScaffolds[acc]] = 1
+            print(acc, 'in', accToScaffolds[acc])
+        except:
+            print("couldtn find accession",acc)
+    #print(acc, 'in', accToScaffolds[acc])
+    
 
 print(scaffoldCount)
 

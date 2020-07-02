@@ -97,7 +97,7 @@ for acc in speciesAccession:
         #print(accToScaffolds[acc])
         try:
             scaffoldCount[accToScaffolds[acc]] = 1
-            print(acc, 'in', accToScaffolds[acc])
+            print(acc, 'in', accToScaffolds[acc])   
         except:
             print("couldtn find accession",acc)
     #print(acc, 'in', accToScaffolds[acc])

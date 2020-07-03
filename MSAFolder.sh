@@ -10,7 +10,7 @@ do
 
     date=$(basename $i .fas)
     name=${date:11}
-	python /share/apps/slimsuite/tools/seqsuite.py seq -seqin $i -align -alnprog clustalo -seqout ${1}/${name}.fas
+    python2 /share/apps/slimsuite/tools/seqsuite.py seq -seqin $i -align -alnprog clustalo -seqout ${out}/${name}.align.fas
 
 done 
 

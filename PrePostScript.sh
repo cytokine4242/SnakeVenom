@@ -16,7 +16,7 @@ for file in ${inputDir}/*.fas
 do
 prefix=$(basename $file .fas) 
 mkdir ${out}/${prefix}
-python3 PrePostGene.py \
+python3 ~/progs/SnakeGit/PrePostGene.py \
 $file \
 ${sortedDir}/2020-07-14.CROVV.AccessionGene.sorted.map.csv \
 ${sortedDir}/2020-07-14.NAJNA.AccessionGene.sorted.map.csv \
@@ -24,12 +24,12 @@ ${sortedDir}/2020-07-14.NOTSC.AccessionGene.sorted.map.csv \
 ${sortedDir}/2020-07-14.PSETE.AccessionGene.sorted.map.csv \
 ${sortedDir}/2020-07-14.HYDCUR.AccessionGene.sorted.map.csv \
 ${sortedDir}/2020-07-16.BOACO.AccessionGene.sorted.map.csv \
-${out}/${prefix}/${prefix}.bed > ${out}/${prefix}/${prefix}.log
+${out}/${prefix}/${prefix}.bed &> ${out}/${prefix}/${prefix}.log
 
     for bed in ${out}/${prefix}/*.bed 
     do
         spec=$(echo $bed | rev | cut -f2 -d'.' | rev)
-        acc=$(echo $bed | rev | cut -f6 -d'.' | rev |cut -f2 -d"/")
+        acc=$(echo $bed | rev | cut -f6- -d'.'|cut -f1 -d"/" | rev)
         echo $spec
         echo $acc
         

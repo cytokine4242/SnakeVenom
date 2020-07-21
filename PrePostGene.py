@@ -65,7 +65,11 @@ def accessSpeciesGenes(genes,SpeciesAccessions, BED):
     print()
     for accession in SpeciesAccessions:
         current = accession[0]
-        currentIndex = accessionToIndex[current]
+        try:
+            currentIndex = accessionToIndex[current]
+        except KeyError:
+            print("ERROR", current, "Not found in mapping check if query") 
+            continue 
         preIndex = accessionToIndex[current]-1
         pre = indexToAccession[preIndex]
         pre = geneInfo[pre]
@@ -110,6 +114,12 @@ def accessSpeciesGenes(genes,SpeciesAccessions, BED):
         accession[2] = post
         
     for accession in SpeciesAccessions:
+        try:
+            currentIndex = accessionToIndex[accession[0]]
+        except KeyError:
+            print("Skipping bed generation for ",accession[0])
+            continue
+
         #print(accession)
         print(accession[0])
         print("going into if")

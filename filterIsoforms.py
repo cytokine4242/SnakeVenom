@@ -64,4 +64,4 @@ with open(inFast, "r") as handle:
         outputrecord.append(record)
 
 with open(outFast, "w") as output_handle:
-    SeqIO.write(outputrecord, output_handle, "fasta")
+    SeqIO.write(outputrecord, output_handle, "fasta-2line")

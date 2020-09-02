@@ -11,15 +11,26 @@ speciesAccession =[]
 outputrecord =[]
 
 duplicates = []
-dedup_records = {}
+dedup_records = []
+a= 0
 for record in SeqIO.parse(inFast, "fasta"):
     # Use the sequence as the key and then have a list of id's as the value
-    a = record.name
-    print(a)
+    b = record.description
+    m = re.search('isoform', b)
+    if m:
+       match = m.string
+       print(match)
+       m = re.search('isofrom X1', b)
+       if m:
+           dedup_records.append(record)
+       else:
+           duplicates.append(record)   
+    else:
+       dedup_records.append(record)  
+    a = record.description
 
-with open(outFast, 'w') as output:
-    for item in duplicates:
-        # Join the ids and write them out as the fasta
-        output.write('%s\n' % item)
 
+
+SeqIO.write(duplicates, outFast+"removedIso.fasta", "fasta-2line")
+SeqIO.write(dedup_records, outFast+"filteredIso.fasta", "fasta-2line")
 print(duplicates)

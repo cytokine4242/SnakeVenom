@@ -3,7 +3,7 @@ import sys
 import csv
 from Bio import SeqIO
 from Bio.SeqIO import FastaIO
-
+#load in handles
 GeneFile = sys.argv[1]
 RNAFile = sys.argv[2]
 CDSFile = sys.argv[3]
@@ -15,7 +15,7 @@ print(CDSFile)
 print(fasta)
 
 genes = {}
-
+#read genes
 with open(GeneFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter='\t')
     for row in csv_reader:
@@ -24,6 +24,7 @@ with open(GeneFile) as csv_file:
 
 
 cds = {}
+#read cds
 with open(CDSFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter='\t')
     for row in csv_reader:
@@ -32,6 +33,7 @@ with open(CDSFile) as csv_file:
 
 
 rnaDict = {}
+#read RNA
 with open(RNAFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter='\t')
     for row in csv_reader:
@@ -46,6 +48,7 @@ KeepRecords = []
 records = 0
 repeats = 0
 uniq = 0
+#open fasta
 with open(fasta, "r") as handle: 
     for record in SeqIO.parse(handle, "fasta"):
         #print(record.name)
@@ -61,6 +64,7 @@ with open(fasta, "r") as handle:
         accession = accession[:-1]
         #print(accession)
         found = False
+        #lookup if gene is already used 
         try:
 
             
@@ -86,11 +90,11 @@ with open(fasta, "r") as handle:
             uniq = uniq +1 
 
 
-
+#write out uniqe files
 with open(out, "w") as output_handle:
 	fasta_out = FastaIO.FastaWriter(output_handle, wrap=None)
 	fasta_out.write_file(KeepRecords)
-
+#print log info
 print(" Number of records = ", records)
 print("Number of uniq = ", uniq )
 print("number of removed = ", repeats)

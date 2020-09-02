@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#loopthrough beds and create fastas
 inputDir=$1
 out=$2
 genomeDir=$3

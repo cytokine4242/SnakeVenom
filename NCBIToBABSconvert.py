@@ -1,3 +1,4 @@
+#convert a NCBI naming system to a babs naming system
 import sys
 import csv
 import re

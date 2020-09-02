@@ -1,6 +1,6 @@
 #1/bin/bash 
 
-
+#count species in a fasta and print to console
 specCode=$( cat /scratch/venom/SnakeVenom-Feb20/Data/2020-03-03.SpecCode/2020-03-03.SpecCodes.txt)
 
 fasta=$(ls *.fas)

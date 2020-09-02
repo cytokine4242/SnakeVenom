@@ -1,4 +1,5 @@
 #!/bin/bash
+#prefix the date to the start of all files without it in this sub directory and below
 echo "arguments are $@"
 for i in "$@"
 do

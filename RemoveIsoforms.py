@@ -1,3 +1,4 @@
+#remove isofroms based on names
 import sys
 import csv
 import re

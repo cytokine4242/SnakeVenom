@@ -1,3 +1,6 @@
+
+#superseeded by GroupAL.py
+
 import sys
 import csv
 from Bio import SeqIO

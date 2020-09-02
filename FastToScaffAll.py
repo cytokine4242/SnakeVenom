@@ -4,6 +4,8 @@ import re
 from Bio import SeqIO
 from Bio.SeqIO import FastaIO
 
+
+#get the accesions for each of the relevant snake formats
 def AccessionSearch(species, search):
 
     if species == 'NOTSC' or species == 'PSETE':
@@ -39,14 +41,18 @@ def AccessionSearch(species, search):
     
     return accession 
 
+
+#import the files needed
 GeneFile = sys.argv[1]
 fasta = sys.argv[2]
 specCode = sys.argv[3]
 print(specCode)
+#generate empty arrays
 scaffolds = {}
 accession = []
 records = 0
 speciesAccession =[]
+#read in the fasta file splitting the name inot db, species and accession
 with open(fasta, "r") as handle: 
     for record in SeqIO.parse(handle, "fasta"):
         #print(record.name)
@@ -55,7 +61,7 @@ with open(fasta, "r") as handle:
         db = ID[0].split('_')[0]
         spec = ID[0].split('_')[1]
         accessionList = ID[0].split('_')
-        
+        #get whole accession even when different length
         if (spec == specCode):
             size =len(accessionList)
             accession = ""
@@ -68,6 +74,8 @@ with open(fasta, "r") as handle:
 
 print(len(speciesAccession))
 accToScaffolds = {}
+
+#oppen GFF and record scaffold protiens are on
 with open(GeneFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter='\t')
     for row in csv_reader:
@@ -87,6 +95,8 @@ with open(GeneFile) as csv_file:
         accToScaffolds[accession] = row[0]
         #print(accession)
 scaffoldCount = {}
+
+#count and print all scaffolds found with number of genes on them
 for acc in speciesAccession:
     #print(acc)
     try:

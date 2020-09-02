@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#copy files to a backup folder 
 date=$(date +%F)
 dir=~/Backup/${date}.Backup
 mkdir $dir 

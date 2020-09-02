@@ -1,3 +1,5 @@
+#!/bin/bash
+#extract all sequences from relevlant snakes from all fastas in a folder
 out=$1
 fasta=$(ls *.fas)
 zero=0

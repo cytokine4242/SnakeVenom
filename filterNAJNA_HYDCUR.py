@@ -1,4 +1,4 @@
-
+#out dated by filterisofroms.py
 import sys
 import csv
 import re
@@ -15,6 +15,7 @@ NAJNAcheck ={}
 HYDUCRcheck = {}
 PROFLcheck ={}
 outputrecord =[]
+#open the read in fasta file and read in HYDCUR, NAJNA, or PROFL entries for filtering isoforms 
 with open(inFast, "r") as handle: 
     for record in SeqIO.parse(handle, "fasta"):
         #print(record.name)
@@ -63,5 +64,6 @@ with open(inFast, "r") as handle:
                 print(accession)
         outputrecord.append(record)
 
+#write it out again without the secondary isoforms 
 with open(outFast, "w") as output_handle:
     SeqIO.write(outputrecord, output_handle, "fasta")

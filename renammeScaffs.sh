@@ -1,5 +1,5 @@
 #!/bin/bash 
-
+#rename scaffolds in gff to NCBI format
 mapping=$(cat $1)
 gff=$2
 

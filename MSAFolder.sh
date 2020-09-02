@@ -1,7 +1,7 @@
 
 
 #MSA 
-
+#perform a muliple sequence alignment of a complete folder using clustal
 out=$1
 fasta=$(ls *.fas)
 zero=0

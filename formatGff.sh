@@ -1,5 +1,5 @@
 #!/bin/bash 
-
+#extract the geens, RNA, and CDS sequecnes from a gff for looup tables
 
 for file in *
 do

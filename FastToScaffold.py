@@ -12,6 +12,7 @@ scaffolds = {}
 accession = []
 records = 0
 speciesAccession =[]
+#read in the fasta file splitting the name inot db, species and accession
 with open(fasta, "r") as handle: 
     for record in SeqIO.parse(handle, "fasta"):
         #print(record.name)
@@ -33,6 +34,8 @@ with open(fasta, "r") as handle:
 
 print(len(speciesAccession))
 accToScaffolds = {}
+
+#oppen GFF and record scaffold protiens are on
 with open(GeneFile) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter='\t')
     for row in csv_reader:
@@ -53,6 +56,9 @@ with open(GeneFile) as csv_file:
         accToScaffolds[accession] = row[0]
         #print(accession)
 scaffoldCount = {}
+
+
+#count and print all scaffolds found with number of genes on them
 for acc in speciesAccession:
     print(acc)
     try:

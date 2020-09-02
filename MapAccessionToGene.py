@@ -1,9 +1,11 @@
+#go from an accession code in the proteome to the actual gene location
 import sys
 import csv
 import re
 from Bio import SeqIO
 from Bio.SeqIO import FastaIO
 
+#get correct accession format 
 def AccessionSearch(species, search):
 
     if species == 'NOTSC' or species == 'PSETE':
@@ -75,7 +77,7 @@ with open(GeneFiles) as csv_file:
            continue
         else:
             genes[accession] = previousGene
-        
+#print out the bed format       
 with open(out, 'w') as csv_file:  
     writer = csv.writer(csv_file)
     for key, value in genes.items():

@@ -4,7 +4,7 @@ import re
 from Bio import SeqIO
 from Bio.SeqIO import FastaIO 
 import operator
-
+#sort by accessions to make easier
 genes = sys.argv[1]
 out = sys.argv[2]
 unsort =[]

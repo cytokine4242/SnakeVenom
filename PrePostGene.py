@@ -5,13 +5,15 @@ from Bio import SeqIO
 from Bio.SeqIO import FastaIO 
 
 
-
+#funciton to write out a bed file
 def writeBed(bed,name):
     with open(name, 'w') as csv_file:  
         writer = csv.writer(csv_file,delimiter='\t')
         for row in bed:
             writer.writerow(row)
 
+
+#check to see if the member is already present in the fasta
 def CheckDup(SpeciesAccessions,validate,valid,current):
     print("current =",current)
     print("validate =",validate)
@@ -35,7 +37,7 @@ def CheckDup(SpeciesAccessions,validate,valid,current):
         valid=False
 
     
-    
+    #check gene is of good enough size
     size = int(validate[3])-int(validate[2])
     if size < 5000:
         valid = False 
@@ -44,7 +46,7 @@ def CheckDup(SpeciesAccessions,validate,valid,current):
     return valid
 
 
-
+#convert list of genes to bed
 def accessSpeciesGenes(genes,SpeciesAccessions, BED):
     geneInfo ={}
     accessionToIndex={}
@@ -63,6 +65,8 @@ def accessSpeciesGenes(genes,SpeciesAccessions, BED):
     pre = ""
     post = ""
     print()
+
+    #find all accessions in gff
     for accession in SpeciesAccessions:
         current = accession[0]
         try:
@@ -112,7 +116,8 @@ def accessSpeciesGenes(genes,SpeciesAccessions, BED):
         
         accession[1] = pre
         accession[2] = post
-        
+    
+    #create the bed with valid genes
     for accession in SpeciesAccessions:
         try:
             currentIndex = accessionToIndex[accession[0]]

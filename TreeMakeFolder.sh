@@ -1,6 +1,6 @@
 
-#MSA 
-
+#!/bin/bash 
+#make a indiviudal clustal tree for eah file in a folder
 out=$1
 fasta=$(ls *.fas)
 zero=0

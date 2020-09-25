@@ -4,44 +4,36 @@ import re
 from Bio import SeqIO
 from Bio.SeqIO import FastaIO 
 
-
-#funciton to write out a bed file
-def writeBed(bed,name):
-    with open(name, 'w') as csv_file:  
-        writer = csv.writer(csv_file,delimiter='\t')
-        for row in bed:
-            writer.writerow(row)
-
-
 #check to see if the member is already present in the fasta
 def CheckDup(SpeciesAccessions,validate,valid,current):
-    print("current =",current)
-    print("validate =",validate)
+    #print("current =",current)
+    #print("validate =",validate)
     
     for check in SpeciesAccessions:
         #print("check =",check)
         if validate[0] == check[0]:
-            print("already present")
-            valid = False
+            #print("already present")
+            valid = "Tandem"
     
     if current[2] == validate[2]:
-        print("same start")
+        #print("same start")
         valid = False
     
     if current[3] == validate[3]:
-        print("same end")
+        #print("same end")
         valid = False
     
     if int(validate[3]) > int(current[3]) and int(validate[2]) < int(current[3]): 
+        print(validate[3],current[3], validate[2], current[3])
         print("overlap")
         valid=False
 
     
     #check gene is of good enough size
-    size = int(validate[3])-int(validate[2])
-    if size < 5000:
-        valid = False 
-        print("too short")
+    #size = int(validate[3])-int(validate[2])
+    #if size < 5000:
+        #valid = False 
+        #print("too short")
     
     return valid
 
@@ -52,6 +44,7 @@ def accessSpeciesGenes(genes,SpeciesAccessions, BED):
     accessionToIndex={}
     indexToAccession = {}
     index = 0
+    outList =[]
     with open(genes) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         for row in csv_reader:
@@ -64,10 +57,11 @@ def accessSpeciesGenes(genes,SpeciesAccessions, BED):
     current = ""
     pre = ""
     post = ""
-    print()
+    #print()
 
     #find all accessions in gff
     for accession in SpeciesAccessions:
+        output =[]
         current = accession[0]
         try:
             currentIndex = accessionToIndex[current]
@@ -84,61 +78,61 @@ def accessSpeciesGenes(genes,SpeciesAccessions, BED):
         post = geneInfo[post]
         current = geneInfo[current]
         
-        valid = False
-        
-        while valid == False:
-            valid = True
+
+        preValid = False
+        while preValid == False:
+            preValid = True
             pre = indexToAccession[preIndex]
             pre = geneInfo[pre]
-            valid = CheckDup(SpeciesAccessions,pre,valid,current)
+            print("pre =",pre)
+            preValid = CheckDup(SpeciesAccessions,pre,preValid,current)
             preIndex+=-1
-            print(valid)
+            #print(preValid)
             
-        print("found valid")
-        valid = False
-        while valid == False:
-            valid = True
+        #print("found valid")
+        postValid = False
+        while postValid == False:
+            postValid = True
             post = indexToAccession[postIndex]
             post = geneInfo[post]
-            valid = CheckDup(SpeciesAccessions,post,valid,current)
+            postValid = CheckDup(SpeciesAccessions,post,postValid,current)
             postIndex+=1
-            print(valid)
-        print("found valid")
-        print(pre[1])
-        print(current[1])
+            #print(postValid)
+        
+        
+    
+        #print(postValid)
+        #print("found valid")
+        #check scaffold
+        print("check")
+        print(pre)
         if pre[1] != current[1]:
             #pre = ["NA","NA","NA","edge of scaffold","0","NA"]
-            pre = False
+            pre = "edge"
+        else:
+            pre = preValid
+        print(post)    
         if post[1] != current[1]:
             #post = ["NA","NA","NA","edge of scaffold","0","NA"]
-            post = False
+            post = "edge"
+        else:
+            post = postValid
                 
-        
-        accession[1] = pre
-        accession[2] = post
-    
-    #create the bed with valid genes
-    for accession in SpeciesAccessions:
-        try:
-            currentIndex = accessionToIndex[accession[0]]
-        except KeyError:
-            print("Skipping bed generation for ",accession[0])
-            continue
+        print(current,"examine")
+        if (current[4] == "-" ):
+            print(post)
+            print(pre)
+            print("flip")
+            a = pre
+            pre = post
+            post = a
+        output.append(current[0])
+        output.append(pre)
+        output.append(post)
+        output.append(current[4])
+        outList.append(output)
 
-        #print(accession)
-        print(accession[0])
-        print("going into if")
-        print("1",accession[1])
-        print("2",accession[2])
-        #BED.append([accession[0][1],accession[0][2],accession[0][3],accession[0][0]])
-        if accession[1] != False:
-            print("inside 1",accession[1])
-            BED.append([accession[1][1],accession[1][2],accession[1][3],"pre-"+accession[0]+";"+accession[1][0],"100",accession[1][4]])
-        if accession[2] != False:
-            print("inside 2", accession[2])
-            BED.append([accession[2][1],accession[2][2],accession[2][3],"post-"+accession[0]+";"+accession[2][0],"100",accession[2][4]])
-
-    return BED
+    return outList
 
         
 
@@ -208,6 +202,7 @@ NotscBED = []
 PseteBED = []
 HydcurBED = []
 BoacoBED = [] 
+print(CrovvList)
 print("\n\nCROVV GENES\n\n")
 CrovvBED = accessSpeciesGenes(CROVV,CrovvList,CrovvBED)
 print("\n\nNAJNA GENES\n\n")
@@ -221,9 +216,42 @@ HydcurBED = accessSpeciesGenes(HYDCUR,HydcurList,HydcurBED)
 print("\n\nBOACO GENES\n\n")
 BoacoBED = accessSpeciesGenes(BOACO,BoacoList,BoacoBED)
 
-writeBed(CrovvBED,prefix+".CROVV.bed")
-writeBed(NajnaBED,prefix+".NAJNA.bed")
-writeBed(NotscBED,prefix+".NOTSC.bed")
-writeBed(PseteBED,prefix+".PSETE.bed")
-writeBed(HydcurBED,prefix+".HYDCUR.bed")
-writeBed(BoacoBED,prefix+".BOACO.bed")
+print(CrovvBED)
+print(NotscBED)
+
+
+
+with open(prefix + 'Crovv.tandem.csv', 'w', newline='') as csv_1:
+  csv_out = csv.writer(csv_1)
+  csv_out.writerows(CrovvBED)
+
+
+  
+with open(prefix + 'Najna.tandem.csv', 'w', newline='') as csv_1:
+  csv_out = csv.writer(csv_1)
+  csv_out.writerows(NajnaBED)
+
+
+
+with open(prefix + 'Notsc.tandem.csv', 'w', newline='') as csv_1:
+  csv_out = csv.writer(csv_1)
+  csv_out.writerows(NotscBED)
+
+
+
+
+with open(prefix + 'Psete.tandem.csv', 'w', newline='') as csv_1:
+  csv_out = csv.writer(csv_1)
+  csv_out.writerows(PseteBED)
+
+
+
+with open(prefix + 'Hydcur.tandem.csv', 'w', newline='') as csv_1:
+  csv_out = csv.writer(csv_1)
+  csv_out.writerows(HydcurBED)
+
+
+
+with open(prefix + 'Boaco.tandem.csv', 'w', newline='') as csv_1:
+  csv_out = csv.writer(csv_1)
+  csv_out.writerows(BoacoBED)

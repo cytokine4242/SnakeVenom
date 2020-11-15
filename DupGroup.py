@@ -5,7 +5,7 @@ from Bio.SeqIO import FastaIO
 from Bio import Phylo
 import re
 import pylab
-
+from ete3 import Tree
 
 
 def findLineage(speciesList):
@@ -161,6 +161,7 @@ for leaf in root.get_terminals():
     leafDup[leaf.name] =0
 
 i =0
+numberDups = len(groups)
 for group in groups:
     i +=1
     #print("Group ", i)
@@ -171,11 +172,12 @@ for group in groups:
     #print("lentght is",len(speciesList),speciesList)
     if len(speciesList) == 1:
         #print("inside")
+        #print(group)
         species = speciesList[0]
         latinName =speciesMap[species]
         #print(latinName)
         leafDup[latinName]+=1
-        print("Group ",i,"\t",1,"\t", 1,"\t",0,"\t",1)
+        #print("Group ",i,"\t",1,"\t", 1,"\t",0,"\t",1)
     else:  
         for species in speciesList:
             latin.append(speciesMap[species])
@@ -200,14 +202,30 @@ for group in groups:
             nLeafs +=1
         diff = nLeafs - len(search)
         percent = len(search)/nLeafs
-        print("Group ",i,"\t",nLeafs,"\t", len(search),"\t",diff,"\t",percent)
+        #print("Group ",i,"\t",nLeafs,"\t", len(search),"\t",diff,"\t",percent)
 
-        
+          
 
 for leaf in root.get_terminals():
     name = leaf.name
+    #print(leaf.name)
     #print(name) 
-    name = name+" ("+str(leafDup[leaf.name])+")"
-    #print(name)
+    num = float(leafDup[leaf.name])
+    divis = float(numberDups)
+    supp = num/divis
+    print(num, divis, supp)
+    formatted_float = "{0:.1%}".format(supp)
+    name = formatted_float+ " | " + name  
     leaf.name = name
-Phylo.write(tree,out, "newick")
+for node in root.get_nonterminals():
+    print(node.get_terminals)
+    print(node.confidence, numberDups, node.confidence/numberDups)
+    node.confidence = node.confidence/numberDups
+    
+Phylo.write(tree,out +"duplications.nwk", "newick")
+
+t = Tree(out +"duplications.nwk", format=1)
+
+for node in t.traverse("postorder"):
+    # Do some analysis on node
+    print(node.name,",",node.support,",",node.dist)

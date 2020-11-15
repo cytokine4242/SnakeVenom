@@ -12,7 +12,7 @@ import pandas as pd
 queryFile=sys.argv[1]
 
 fasta=sys.argv[2]
-m = re.search('(.*).fas', fasta)
+m = re.search('2020-11-07.(.*).fas', fasta)
 if m:
     family = m.group(1)
 print(family)
@@ -59,7 +59,7 @@ speciesCount["RAT"]=0
 speciesCount["XENTR"]=0
         
 
-
+numbers=[Vsnakes,NVsnakes,lizards,speciesCount]
 
 count = 0
 VsnakesCount =0
@@ -87,31 +87,31 @@ with open(fasta, "r") as handle:
             db = ID[0].split('_')[0]
             spec = ID[0].split('_')[1]
             try:
-                Vsnakes[spec]
+                Vsnakes[spec] +=1
                 VsnakesCount+=1
             except KeyError:
                 fail = True
             try:
-                NVsnakes[spec]
+                NVsnakes[spec]+=1 
                 NVsnakesCount+=1
             except KeyError:
                 fail = True
             try:
-                lizards[spec]
+                lizards[spec]+=1
                 lizardsCount+=1
             except KeyError:
                 fail = True
             try:
-                speciesCount[spec]
+                speciesCount[spec]+=1
                 qfoCount+=1
             except KeyError:
                 fail = True
                 
             #speciesCount[spec]+=1
 
-
+print(numbers)
 print(familyName,"\t",count,"\t",VsnakesCount,"\t",NVsnakesCount,"\t",lizardsCount,"\t",qfoCount,)
-
+ 
 
 #Reptiles = {}
 #Reptiles["ANOCA"]=0

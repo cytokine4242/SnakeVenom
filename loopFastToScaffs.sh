@@ -1,9 +1,9 @@
 #!/bin/bash
-#code=/mnt/e/work/hons/SnakeVenom-Feb20/Progs/SnakeVenom
-#gff=/mnt/e/work/hons/SnakeVenom-Feb20/Data/2020-06-17.GenomeGFF
+code=/mnt/e/work/hons/SnakeVenom-Feb20/Progs/SnakeVenom
+gff=/mnt/e/work/hons/SnakeVenom-Feb20/Data/2020-06-17.GenomeGFF
 #loop through and find all scaffold counts for the 6 snakes of interest
-code=~/progs/SnakeGit
-gff=/scratch/venom/SnakeVenom-Feb20/Data/2020-06-17.GenomeGFF
+#code=~/progs/SnakeGit
+#gff=/scratch/venom/SnakeVenom-Feb20/Data/2020-06-17.GenomeGFF
 while read file;
 do 
     echo $file

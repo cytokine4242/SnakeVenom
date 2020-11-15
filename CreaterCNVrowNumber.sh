@@ -14,7 +14,7 @@ while read Accession; do
     then
         echo "$searchAtrribute is NOT found"
     else
-        linenumber=$(egrep -n "${searchAtrribute};" $cnvTable | cut -f1 -d":")
+        linenumber=$(egrep -n "${searchAtrribute};" $cnvTable | cut -f1 -d":" )
         echo "line $linenumber"
         echo "$linenumber,$searchAtrribute">> ${out}.tmp
     fi

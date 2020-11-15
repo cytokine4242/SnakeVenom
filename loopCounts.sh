@@ -6,7 +6,7 @@ fastas=$(ls *.fas)
 out=$1
 for fasta in $fastas
 do
-    #echo $fasta
+    echo $fasta
     basename=$(basename $fasta .fas)
     #echo $basename
     python3 /mnt/e/work/hons/SnakeVenom-Feb20/Progs/SnakeVenom/UniqeCount.py \

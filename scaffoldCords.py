@@ -44,7 +44,7 @@ with open(bed) as csv_file:
                 print("success")
             else:
                 scaffold[row[0]+":"+str(version)] = [downstream,upstream,count+1]
-
+            print("added to bed", scaffold[row[0]+":"+str(version)])
 
         except KeyError:
             scaffold[row[0]+":"+str(version)] = [row[1],row[2],1]
@@ -54,6 +54,7 @@ with open(bed) as csv_file:
 for key in scaffold:
     if scaffold[key][2] != 1:
         total = int(scaffold[key][1])-int(scaffold[key][0])
+        print(key,scaffold[key])
         print(scaffold[key])
         print(total)
         percent = total/10

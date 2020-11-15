@@ -23,6 +23,9 @@ def AccessionSearch(species, search):
         #ID=Naja_naja35841-RA
     elif ( species == 'HYDCUR'):
         m = re.search('Parent=(.*)', search)
+    
+    elif ( species == 'DEIAC'):
+        m = re.search('Parent=(.*)', search)
 
     if m:
         match = m.group(1)
@@ -68,7 +71,7 @@ with open(GeneFiles) as csv_file:
             continue
         #print(row[8])
         #print(row[2])
-        if row[2] == "gene":
+        if row[2] == "mRNA":
             print(row[2])
             print(row)
             previousGene = [row[0],row[3],row[4],row[6],row[8]]
@@ -81,6 +84,8 @@ with open(GeneFiles) as csv_file:
 with open(out, 'w') as csv_file:  
     writer = csv.writer(csv_file)
     for key, value in genes.items():
-       writer.writerow([key, value[0],value[1],value[2],value[3],value[4]])
+        print(key)
+        print(value)
+        writer.writerow([key, value[0],value[1],value[2],value[3],value[4]])
 
 #print(genes)

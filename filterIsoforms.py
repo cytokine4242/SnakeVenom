@@ -27,7 +27,7 @@ with open(inFast, "r") as handle:
         
         size =len(accessionList)
         accession = ""
-        for i in range(3,size):
+        for i in range(3,size): 
             accession = accession + accessionList[i] + "_"
         accession = accession[:-1]
         speciesAccession.append(accession)

@@ -72,7 +72,7 @@ def findGroups(self):
 
 nwktree = sys.argv[1]
 #out= sys.argv[2]
-t = Tree(nwktree)
+t = Tree(nwktree,quoted_node_names = True)
 
 checkDuplications(t)
 findGroups(t)

@@ -14,6 +14,7 @@ BOACO="BOACO"
 for file in ${inputDir}/*.nwk 
 do
 prefix=$(basename $file .tree.nwk) 
+echo $prefix
 python3 /mnt/e/work/hons/SnakeVenom-Feb20/Progs/SnakeVenom/findGroupModified.py \
 $file > ${out}/${prefix}.grp
 

@@ -71,7 +71,7 @@ with open(GeneFiles) as csv_file:
             continue
         #print(row[8])
         #print(row[2])
-        if row[2] == "mRNA":
+        if row[2] == "gene":
             print(row[2])
             print(row)
             previousGene = [row[0],row[3],row[4],row[6],row[8]]
